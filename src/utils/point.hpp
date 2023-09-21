@@ -48,4 +48,37 @@ constexpr FPoint operator - (FPoint a, FPoint const& b)
     return a;
 }
 
+
+constexpr int dist2(Point a, Point b)
+{
+    Point delta {
+        a.x - b.x,
+        a.y - b.y
+    };
+    return delta.x * delta.x + delta.y * delta.y;
+}
+
+constexpr float dist2(FPoint a, FPoint b)
+{
+    FPoint delta {
+        a.x - b.x,
+        a.y - b.y
+    };
+    return delta.x * delta.x + delta.y * delta.y;
+}
+
+constexpr float dist2(FPoint a, Point b)
+{
+    FPoint delta {
+        a.x - static_cast<float>(b.x),
+        a.y - static_cast<float>(b.y)
+    };
+    return delta.x * delta.x + delta.y * delta.y;
+}
+
+constexpr float dist2(Point a, FPoint b)
+{
+    return dist2(b, a);
+}
+
 #endif // INCLUDE_UTILS_POINT_HPP
