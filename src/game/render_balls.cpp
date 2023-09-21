@@ -10,7 +10,7 @@ void game::render_balls()
     auto& balls = game::balls();
     auto& cueable = game::cueable_balls();
 
-    for(int i = 0; i < balls.size(); i++) {
+    for(u32 i = 0; i < balls.size(); i++) {
         auto& ball = balls[i];
 
         Point pos {

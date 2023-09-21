@@ -1,5 +1,6 @@
-#include "game.hpp"
-#include "ball.hpp"
+#include "game/game.hpp"
+#include "game/ball.hpp"
+#include "game/mouse.hpp"
 #include <SDL2/SDL_events.h>
 #include <iostream>
 
@@ -7,59 +8,65 @@ using std::cout;
 using std::endl;
 
 
-void game::
-mouseup(SDL_MouseButtonEvent& ev, scene_uid)
+namespace game
 {
+    MouseMode mouse_mode = MM_NONE;
 
+    Point drag_start {0, 0};
 }
+
 
 void game::
 mousedown(SDL_MouseButtonEvent& ev, scene_uid)
 {
+    Point pos = {ev.x, ev.y};
+    int snap_range2 = 48 * 48; // squared
+
+    // Cue ball
+    if(ev.button == SDL_BUTTON_LEFT) {
+        auto const& balls = game::balls();
+
+        int closest = get_closest_ball
+            (pos, is_ball_cuable);
+        if(closest == -1)
+            return;
+
+        float dist2 = ::dist2(pos, balls[closest].pos);
+
+        if(dist2 < snap_range2) {
+            mouse_mode = MM_CUE;
+            drag_start = pos;
+        }
+    }
+
     // Add/Modify balls
     if(ev.button == SDL_BUTTON_RIGHT) {
         auto const& balls = game::balls();
 
-        Point pos = {ev.x, ev.y};
-        int closest = -1;
-        float closest_dist2;
-
-        for(int i = 0; i < balls.size(); i++) {
-            auto const& ball = balls[i];
-
-            Point delta {
-                ball.pos.x - pos.x,
-                ball.pos.y - pos.y
-            };
-
-            float dist2 = delta.x * delta.x
-                        + delta.y * delta.y;
-
-            if(closest == -1 || dist2 < closest_dist2) {
-                closest = i;
-                closest_dist2 = dist2;
-            }
-        }
-
-        // Squared range for cueable-switch to activate
-        int min_range2 = 48 * 48;
-
-        if(closest == -1 || closest_dist2 > min_range2) {
+        int closest = get_closest_ball(pos);
+        if(closest == -1) {
             create_ball({ev.x, ev.y});
-            cout << "Summon thee ball at "
-                 << ev.x << "x" << ev.y << endl;
-        } else {
-            auto& bset = cueable_balls();
-            if(bset.find(closest) == bset.end())
-                bset.insert(closest);
-            else
-                bset.erase(closest);
+            return;
         }
+
+        float dist2 = ::dist2(pos, balls[closest].pos);
+
+        if(closest == -1 || dist2 > snap_range2)
+            create_ball({ev.x, ev.y});
+        else
+            ball_toggle_cuable(closest);
     }
 }
 
 void game::
-mouse_motion(SDL_MouseMotionEvent& ev, scene_uid)
+mouseup(SDL_MouseButtonEvent& , scene_uid)
+{
+
+}
+
+
+void game::
+mouse_motion(SDL_MouseMotionEvent& , scene_uid)
 {
 
 }
