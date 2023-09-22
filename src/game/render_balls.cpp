@@ -17,7 +17,7 @@ void game::render_balls()
             static_cast<int>(ball.pos.x),
             static_cast<int>(ball.pos.y)
         };
-        int size = 16;
+        int size = ball.size;
         render_fill_circle(rnd, pos, size);
 
         if(cueable.find(i) != cueable.end()) {

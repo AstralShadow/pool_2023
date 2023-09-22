@@ -12,6 +12,7 @@ namespace game
     } extern mouse_mode;
 
     extern Point drag_start;
+    extern Point mouse_pos;
 }
 
 #endif // INCLUDE_MOUSE_HPP

@@ -1,7 +1,9 @@
 #ifndef INCLUDE_GAME_BALL_HPP
 #define INCLUDE_GAME_BALL_HPP
 
+#include "utils/types.hpp"
 #include "utils/point.hpp"
+#include "game/vector2d.hpp"
 #include <vector>
 #include <set>
 #include <functional>
@@ -15,6 +17,9 @@ namespace game
     struct Ball
     {
         FPoint pos;
+        Vector2D motion;
+
+        static float size;
     };
 
     vector<Ball>& balls();
@@ -30,7 +35,10 @@ namespace game
 
 
     void create_ball(Point pos);
+    void cue_ball(int ball, Vector2D);
+
     void render_balls();
+    void tick_balls(u32 ms);
 
 }
 
