@@ -1,73 +1,24 @@
-#include "game/ball.hpp"
-#include "utils/types.hpp"
+#include "game/get_closest_ball.hpp"
 
 
-int game::get_closest_ball(Point pos,
-        std::function<bool(Ball const&)> query)
+int game::get_closest_ball(Point pos)
 {
-    FPoint fpos {
-        static_cast<float>(pos.x),
-        static_cast<float>(pos.y),
-    };
-    return get_closest_ball(fpos, query);
+    return get_closest_ball<>(pos);
 }
 
-int game::get_closest_ball(Point pos,
-        std::function<bool(int)> query)
+int game::get_closest_ball(FPoint pos)
 {
-    FPoint fpos {
-        static_cast<float>(pos.x),
-        static_cast<float>(pos.y),
-    };
-    return get_closest_ball(fpos, query);
+    return get_closest_ball<>(pos);
 }
 
 
-int game::get_closest_ball(FPoint pos,
-        std::function<bool(Ball const&)> query)
+int game::get_closest_cueable_ball(Point pos)
 {
-    auto const balls = game::balls();
-
-    int closest = -1;
-    float closest_dist2;
-
-    for(u32 i = 0; i < balls.size(); i++) {
-        auto const& ball = balls[i];
-        if(query && query(ball) == false)
-            continue;
-
-        float dist2 = ::dist2(ball.pos, pos);
-
-        if(closest == -1 || dist2 < closest_dist2) {
-            closest = i;
-            closest_dist2 = dist2;
-        }
-    }
-
-    return closest;
+    return get_closest_ball<>(pos, is_ball_cueable);
 }
 
-int game::get_closest_ball(FPoint pos,
-        std::function<bool(int)> query)
+int game::get_closest_cueable_ball(FPoint pos)
 {
-    auto const balls = game::balls();
-
-    int closest = -1;
-    float closest_dist2;
-
-    for(u32 i = 0; i < balls.size(); i++) {
-        auto const& ball = balls[i];
-        if(query(i) == false)
-            continue;
-
-        float dist2 = ::dist2(ball.pos, pos);
-
-        if(closest == -1 || dist2 < closest_dist2) {
-            closest = i;
-            closest_dist2 = dist2;
-        }
-    }
-
-    return closest;
+    return get_closest_ball<>(pos, is_ball_cueable);
 }
 

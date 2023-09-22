@@ -1,7 +1,7 @@
 #include "game/ball.hpp"
 
 
-bool game::is_ball_cuable(int index)
+bool game::is_ball_cueable(int index)
 {
     auto const& _set = cueable_balls();
 
@@ -9,11 +9,11 @@ bool game::is_ball_cuable(int index)
 }
 
 
-void game::ball_toggle_cuable(int index)
+void game::ball_toggle_cueable(int index)
 {
     auto& _set = cueable_balls();
 
-    if(is_ball_cuable(index))
+    if(is_ball_cueable(index))
         _set.erase(index);
     else
         _set.insert(index);

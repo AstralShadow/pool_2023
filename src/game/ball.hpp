@@ -20,24 +20,18 @@ namespace game
     vector<Ball>& balls();
     set<int>& cueable_balls();
 
-    void ball_toggle_cuable(int);
-    bool is_ball_cuable(int);
+    void ball_toggle_cueable(int);
+    bool is_ball_cueable(int);
+
+    int get_closest_ball(Point pos);
+    int get_closest_ball(FPoint pos);
+    int get_closest_cueable_ball(Point pos);
+    int get_closest_cueable_ball(FPoint pos);
 
 
     void create_ball(Point pos);
     void render_balls();
 
-
-    int get_closest_ball(Point pos,
-            std::function<bool(Ball const&)> = 0);
-    int get_closest_ball(FPoint pos,
-            std::function<bool(Ball const&)> = 0);
-
-    int get_closest_ball(Point pos,
-            std::function<bool(int)>);
-    int get_closest_ball(FPoint pos,
-            std::function<bool(int)>);
 }
-
 
 #endif // INCLUDE_GAME_BALL_HPP

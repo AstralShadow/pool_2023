@@ -26,8 +26,7 @@ mousedown(SDL_MouseButtonEvent& ev, scene_uid)
     if(ev.button == SDL_BUTTON_LEFT) {
         auto const& balls = game::balls();
 
-        int closest = get_closest_ball
-            (pos, is_ball_cuable);
+        int closest = get_closest_cueable_ball(pos);
         if(closest == -1)
             return;
 
@@ -54,7 +53,7 @@ mousedown(SDL_MouseButtonEvent& ev, scene_uid)
         if(closest == -1 || dist2 > snap_range2)
             create_ball({ev.x, ev.y});
         else
-            ball_toggle_cuable(closest);
+            ball_toggle_cueable(closest);
     }
 }
 
